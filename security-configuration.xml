@@ -3,11 +3,11 @@
   <version>2.0.8</version>
   <anonymousAccessEnabled>true</anonymousAccessEnabled>
   <anonymousUsername>anonymous</anonymousUsername>
-  <anonymousPassword>{EdQ9eqOPX2UH8vxjMJ6HCHPVdBbH6HfS8+jwP3HLj6Q=}</anonymousPassword>
+  <anonymousPassword>{OlARae5lrfIH1Cb6GWO5SHLGCw88dku1JnOWJV0DKbo=}</anonymousPassword>
   <realms>
+    <realm>LdapAuthenticatingRealm</realm>
     <realm>XmlAuthenticatingRealm</realm>
     <realm>XmlAuthorizingRealm</realm>
-    <realm>LdapAuthenticatingRealm</realm>
   </realms>
   <hashIterations>1024</hashIterations>
 </security-configuration>

@@ -36,6 +36,14 @@
         <role>nx-developer</role>
       </roles>
     </role>
+    <role>
+      <id>admin</id>
+      <name>admin</name>
+      <description>External mapping for admins (LDAP)</description>
+      <roles>
+        <role>nx-admin</role>
+      </roles>
+    </role>
   </roles>
   <userRoleMappings>
     <userRoleMapping>
