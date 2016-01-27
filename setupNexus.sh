@@ -35,7 +35,7 @@ docker cp ${BASEDIR}/${LDAP_CONFIG_NAME} ${NEXUS_NAME}:${NEXUS_CONFIG_DIR}
 docker cp ${BASEDIR}/${SECURITY_CONFIG_NAME} ${NEXUS_NAME}:${NEXUS_CONFIG_DIR}
 docker cp ${BASEDIR}/${SECURITY_CONFIG_EXTRA_NAME} ${NEXUS_NAME}:${NEXUS_CONFIG_DIR}
 
-docker exec -itu root nexus chown -R nexus:nexus ${NEXUS_CONFIG_DIR}/
+docker exec -iu root nexus chown -R nexus:nexus ${NEXUS_CONFIG_DIR}/
 
 echo "Restarting ${NEXUS_NAME} container..."
 docker restart ${NEXUS_NAME}
