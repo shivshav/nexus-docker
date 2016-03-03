@@ -29,15 +29,12 @@ while [ -n "${SLAPD_TMP_DN}" ]; do
 done
 SLAPD_DN="${SLAPD_DN#,}"
 
-#OPENLDAP_ENV_SLAPD_DOMAIN=demo.com
-
-CONF_DIR=$SONATYPE_WORK/conf
 # Create configs from template
+CONF_DIR=$SONATYPE_WORK/conf
 echo "Creating template files..."
 sed "s/{SLAPD_DN}/${SLAPD_DN}/g" /${LDAP_CONFIG_NAME}.template > ${CONF_DIR}/${LDAP_CONFIG_NAME}
 sed -i "s/{LDAP_HOST}/${LDAP_SERVER}/g" ${CONF_DIR}/${LDAP_CONFIG_NAME}
 sed -i "s/{LDAP_ACCOUNTBASE}/${LDAP_ACCOUNTBASE}/g" ${CONF_DIR}/${LDAP_CONFIG_NAME}
 
-chown -R nexus:nexus ${SONATYPE_WORK}
-
-#rm /first-run.sh
+# Remove the first-run file after running once
+rm /first-run.sh
