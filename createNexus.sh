@@ -5,9 +5,7 @@ NEXUS_VOLUME=${2:-nexus-volume}
 NEXUS_IMAGE_NAME=${3:-openfrontier/nexus}
 LDAP_NAME=${4:-openldap}
 
-SONATYPE_WORK=/sonatype-work
-
-echo "IMAGE NAME IS: ${NEXUS_IMAGE_NAME}"
+sonatype_work=/sonatype-work
 
 #Create nexus volume.
 if [ -z "$(docker ps -a | grep ${NEXUS_VOLUME})" ]; then
