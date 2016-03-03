@@ -1,26 +1,28 @@
-FROM sonatype/nexus:oss
+FROM openfrontier/nexus
 
-MAINTAINER zsx <thinkernel@gmail.com>
+MAINTAINER shiv <shiv@demo.com>
 
-ENV MAX_HEAP 2048m
-ENV MIN_HEAP 512m
+ENV SONATYPE_WORK=${SONATYPE_WORK:-/sonatype-work}
+ENV LDAP_SERVER openldap
+ENV LDAP_ACCOUNTBASE ou=accounts,dc=demo,dc=com
 
-USER root
+RUN mkdir -p $SONATYPE_WORK
+#docker cp ${BASEDIR}/${LDAP_CONFIG_NAME} ${NEXUS_NAME}:${NEXUS_CONFIG_DIR}
+COPY ldap.xml.template /
 
-RUN yum install -y \
-  unzip \
-  && yum clean all
+#docker cp ${BASEDIR}/${SECURITY_CONFIG_NAME} ${NEXUS_NAME}:${NEXUS_CONFIG_DIR}
+COPY security.xml $SONATYPE_WORK/conf/
 
-RUN curl -L http://search.maven.org/remotecontent?filepath=org/sonatype/nexus/plugins/nexus-p2-repository-plugin/${NEXUS_VERSION}/nexus-p2-repository-plugin-${NEXUS_VERSION}-bundle.zip -o /opt/sonatype/nexus/nexus-p2-repository-plugin-${NEXUS_VERSION}-bundle.zip && \
-    unzip -q /opt/sonatype/nexus/nexus-p2-repository-plugin-${NEXUS_VERSION}-bundle.zip && \
-    rm /opt/sonatype/nexus/nexus-p2-repository-plugin-${NEXUS_VERSION}-bundle.zip
+#docker cp ${BASEDIR}/${SECURITY_CONFIG_EXTRA_NAME} ${NEXUS_NAME}:${NEXUS_CONFIG_DIR}
+COPY security-configuration.xml $SONATYPE_WORK/conf/
 
-RUN curl -L http://search.maven.org/remotecontent?filepath=org/sonatype/nexus/plugins/nexus-p2-bridge-plugin/${NEXUS_VERSION}/nexus-p2-bridge-plugin-${NEXUS_VERSION}-bundle.zip -o /opt/sonatype/nexus/nexus-p2-bridge-plugin-${NEXUS_VERSION}-bundle.zip && \
-    unzip -q /opt/sonatype/nexus/nexus-p2-bridge-plugin-${NEXUS_VERSION}-bundle.zip && \
-    rm /opt/sonatype/nexus/nexus-p2-bridge-plugin-${NEXUS_VERSION}-bundle.zip
+#RUN chown -R nexus:nexus $SONATYPE_WORK/conf
 
-COPY nexus-start.sh /usr/local/bin/nexus-start.sh
+USER root 
 
-USER nexus
+COPY nexus-start.sh /nexus-start.sh
+COPY first-run.sh /first-run.sh
 
-CMD ["/usr/local/bin/nexus-start.sh"]
+RUN chmod +x /nexus-start.sh /first-run.sh
+
+CMD ["/nexus-start.sh"]

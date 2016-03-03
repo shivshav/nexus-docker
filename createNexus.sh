@@ -7,12 +7,13 @@ LDAP_NAME=${4:-openldap}
 
 SONATYPE_WORK=/sonatype-work
 
+echo "IMAGE NAME IS: ${NEXUS_IMAGE_NAME}"
+
 #Create nexus volume.
 if [ -z "$(docker ps -a | grep ${NEXUS_VOLUME})" ]; then
     docker run \
     --name ${NEXUS_VOLUME} \
     ${NEXUS_IMAGE_NAME} \
-    mkdir ${SONATYPE_WORK}/plugin-repository
     echo "Create nexus volume."
 fi
 

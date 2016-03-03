@@ -6,11 +6,16 @@ P2_PLUGIN_PATH=/opt/sonatype/nexus
 P2_BRIDGE_PLUGIN=nexus-p2-bridge-plugin-${NEXUS_VERSION}
 P2_REPO_PLUGIN=nexus-p2-repository-plugin-${NEXUS_VERSION}
 
-echo "Setup p2 plugins."
-rm -f ${NEXUS_PLUGIN_PATH}/${P2_BRIDGE_PLUGIN}
-rm -f ${NEXUS_PLUGIN_PATH}/${P2_REPO_PLUGIN}
-ln -s ${P2_PLUGIN_PATH}/${P2_BRIDGE_PLUGIN} ${NEXUS_PLUGIN_PATH}/${P2_BRIDGE_PLUGIN}
-ln -s ${P2_PLUGIN_PATH}/${P2_REPO_PLUGIN}   ${NEXUS_PLUGIN_PATH}/${P2_REPO_PLUGIN}
+FIRST_RUN=first-run.sh
+if [[ -x /$FIRST_RUN ]]; then
+    /$FIRST_RUN
+fi
+
+#echo "Setup p2 plugins."
+#rm -f ${NEXUS_PLUGIN_PATH}/${P2_BRIDGE_PLUGIN}
+#rm -f ${NEXUS_PLUGIN_PATH}/${P2_REPO_PLUGIN}
+#ln -s ${P2_PLUGIN_PATH}/${P2_BRIDGE_PLUGIN} ${NEXUS_PLUGIN_PATH}/${P2_BRIDGE_PLUGIN}
+#ln -s ${P2_PLUGIN_PATH}/${P2_REPO_PLUGIN}   ${NEXUS_PLUGIN_PATH}/${P2_REPO_PLUGIN}
 
 echo "Start up nexus."
 exec java \
