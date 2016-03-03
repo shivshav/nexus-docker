@@ -1,4 +1,7 @@
 #!/bin/bash
+set -x
+
+echo $(whoami)
 
 NEXUS_PLUGIN_PATH=${SONATYPE_WORK}/plugin-repository
 P2_PLUGIN_PATH=/opt/sonatype/nexus
@@ -21,17 +24,20 @@ ln -s ${P2_PLUGIN_PATH}/${P2_REPO_PLUGIN}   ${NEXUS_PLUGIN_PATH}/${P2_REPO_PLUGI
 # Getting LDAP Base Dn from FQDN
 SLAPD_TMP_DN=".${OPENLDAP_ENV_SLAPD_DOMAIN}"
 while [ -n "${SLAPD_TMP_DN}" ]; do
-    SLAPD_DN=",dc=${SLAPD_TMP_DN##*.}${OPENLDAP_ENV_SLAPD_DOMAIN}"
+    SLAPD_DN=",dc=${SLAPD_TMP_DN##*.}${SLAPD_DN}"
     SLAPD_TMP_DN="${SLAPD_TMP_DN%.*}"
 done
 SLAPD_DN="${SLAPD_DN#,}"
 
 #OPENLDAP_ENV_SLAPD_DOMAIN=demo.com
 
+CONF_DIR=$SONATYPE_WORK/conf
 # Create configs from template
 echo "Creating template files..."
-sed -e "s/{SLAPD_DN}/${SLAPD_DN}/g" /${LDAP_CONFIG_NAME}.template > ${SONATYPE_WORK}/${LDAP_CONFIG_NAME}
-sed -i "s/{LDAP_HOST}/${LDAP_SERVER}/g" ${SONATYPE_WORK}/${LDAP_CONFIG_NAME}
-sed -i "s/{LDAP_ACCOUNTBASE}/${LDAP_ACCOUNTBASE}/g" ${SONATYPE_WORK}/${LDAP_CONFIG_NAME}
+sed "s/{SLAPD_DN}/${SLAPD_DN}/g" /${LDAP_CONFIG_NAME}.template > ${CONF_DIR}/${LDAP_CONFIG_NAME}
+sed -i "s/{LDAP_HOST}/${LDAP_SERVER}/g" ${CONF_DIR}/${LDAP_CONFIG_NAME}
+sed -i "s/{LDAP_ACCOUNTBASE}/${LDAP_ACCOUNTBASE}/g" ${CONF_DIR}/${LDAP_CONFIG_NAME}
 
-rm /first-run.sh
+chown -R nexus:nexus ${SONATYPE_WORK}
+
+#rm /first-run.sh
