@@ -1,7 +1,4 @@
 #!/bin/bash
-set -x
-
-echo $(whoami)
 
 NEXUS_PLUGIN_PATH=${SONATYPE_WORK}/plugin-repository
 P2_PLUGIN_PATH=/opt/sonatype/nexus
